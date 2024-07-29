@@ -2,6 +2,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <memory>
 using namespace std;
 
 struct TreeNode
@@ -13,6 +14,27 @@ struct TreeNode
     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
+
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
+
+ListNode* ConvertToList(std::vector<int> data)
+{
+    auto* head = new ListNode(data[0]);
+
+    auto* n = head;
+    for (int i = 1; i < data.size(); i++) {
+        n->next = new ListNode(data[i]);
+        n = n->next;
+    }
+
+    return head;
+}
 
 TreeNode* ConvertToTree(const vector<string>& Values)
 {
@@ -51,6 +73,52 @@ TreeNode* ConvertToTree(const vector<string>& Values)
 
     return root;
 }
+
+/* 2nd wariant of tree creation.
+TreeNode* CreateTreeNode(const std::string& NodeString) {
+    if (NodeString == "null") {
+        return nullptr;
+    } else {
+        return new TreeNode(std::stoi(NodeString));
+    }
+}
+
+TreeNode* ConvertToTree(const std::vector<std::string>& data) {
+    if (data.empty() == true) {
+        return nullptr;
+    }
+
+    auto* root = CreateTreeNode(data[0]);
+
+    std::deque<TreeNode*> bfs;
+    bfs.push_back(root);
+
+    int i = 1;
+    while (i < data.size()) {
+
+        auto* node = bfs.front();
+        bfs.pop_front();
+
+        if (node == nullptr) {
+            continue;
+        }
+
+        if (i < data.size()) {
+            node->left = CreateTreeNode(data[i]);
+            bfs.push_back(node->left);
+            i++;
+        }
+
+        if (i < data.size()) {
+            node->right = CreateTreeNode(data[i]);
+            bfs.push_back(node->right);
+            i++;
+        }
+    }
+
+    return root;
+}
+*/
 
 int main(int argc, char** argv)
 {
